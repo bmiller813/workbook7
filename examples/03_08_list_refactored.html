@@ -1,5 +1,5 @@
 <body>
-    <div id="target"></div>
+    <div id="display_area"></div>
 </body>
 <script>
     //fetch all users and places their email in a dropdown list
@@ -19,9 +19,19 @@
         return select;
     }
     function renderEmailList(data){
-        renderSelect(data, document.getElementById("target"), "email", "email");
+        const area = document.getElementById("display_area");
+        //const area = display_area; //Does not always work if window is not the default - button
+        renderSelect(data, area, "email", "email");
     }
     fetch("http://jsonplaceholder.typicode.com/users")
         .then(response => response.json())
         .then(renderEmailList);
+
+    function renderTodoList(){
+        renderSelect(data, document.getElementById("target"), "title", "id");
+    }
+
+    fetch("http://jsonplaceholder.typicode.com/todos")
+        .then(response => response.json())
+        .then(renderTodoList);
 </script>
