@@ -1,0 +1,27 @@
+<body>
+    <div id="target"></div>
+</body>
+<script>
+    //fetch all users and places their email in a dropdown list
+
+    //GENERIC
+    function renderSelect(data, target, keyPropertyDisplay,keyPropertyValue){ 
+        //draw a select
+        let select = document.createElement("select");
+
+        for(let i=0;i<data.length;i++){
+            let opt = document.createElement("option");
+            opt.textContent = data[i][keyPropertyDisplay];
+            opt.value = data[i][keyPropertyValue];
+            select.appendChild(opt);
+        }
+        target.appendChild(select);
+        return select;
+    }
+    function renderEmailList(data){
+        renderSelect(data, document.getElementById("target"), "email", "email");
+    }
+    fetch("http://jsonplaceholder.typicode.com/users")
+        .then(response => response.json())
+        .then(renderEmailList);
+</script>
