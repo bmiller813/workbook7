@@ -1,0 +1,89 @@
+<body>
+    <select id="cityList"></select>
+    <div id="selectedLocation" value="0,0">select location</div>
+    
+    
+    <table id="results"></table>
+</body>
+<script>
+    const cityList = document.getElementById("cityList");
+    const results = document.getElementById("results");
+    const selectedLocation = document.getElementById("selectedLocation");
+
+    function addRow(period){
+        const row = document.createElement("tr");
+        
+        const td = document.createElement("td");
+        td.innerHTML = period.name;
+        row.appendChild(td);
+
+        const td2 = document.createElement("td");
+        td2.innerHTML = period.temperature;
+        row.appendChild(td);
+
+        const td3 = document.createElement("td");
+        td3.innerHTML = period.
+        row.appendChild(td);
+
+        results.appendChild(row);
+    }
+
+    function showResults(data){
+        data.properties.periods.forEach(p=>addRow(p));
+    }
+
+    const baseURL = "https://api.weather.gov/";
+    function latLngURL(latlngPair) {
+        //https://api.weather.gov/points/32.6791,-97.4641
+        return `${baseURL}points/${latlngPair}`;
+    }
+
+    function secondFetch(url2){
+        fetch(url2)
+            .then(response => response.json())
+            .then(data => showResults(data))
+    }
+
+    function getWeather(latlngPair){
+        fetch(latLngURL(latlngPair))
+            .then(response => response.json())
+            .then(data => secondFetch(data,properties.forecast))
+    }
+
+    let cities = [
+        {
+            name: "Benbrook, TX",
+            latitude: 32.6732,
+            longitude: -97.4606
+        },
+        {
+            name: "Columbia, OR",
+            latitude: 45.887550,
+            longitude: -122.812408
+        },
+        {
+            name: "Atlanta, GA",
+            latitude: 33.7887268,
+            longitude: -84.3714996
+        },
+        {
+            name: "Tampa, FL",
+            latitude: 27.76250,
+            longitude: -82.54583
+        },
+    ];
+
+    function option(city) {
+        const o = document.createElement("option");
+        o.innerHTML = city.name;
+        o.value = city.latitude + ',' + city.longitude;
+        return o;
+}
+    cities.forEach(c => cityList.appendChild(option(c)))
+
+    cityList.addEventListener("change", e => {
+        const latlngPair = cityList.selectedOptions[0].value;
+        selectedLocation.innerHTML = latlngPair;
+        getWeather()
+    });
+</script>
