@@ -1,4 +1,5 @@
 console.log(Math.random()); // a number between 0 and 1
+import fs from 'fs';
 
 function diceRoll(sides){
     return Math.floor(Math.random()*sides) + 1;
@@ -49,3 +50,7 @@ for(i=0;i<999;i++){
 for(let k in outcomes){
     console.log(k, outcomes[k], "#".repeat(outcomes[k]/4))
 }
+const text = JSON.stringify(outcomes);
+
+
+fs.writeFile('normal_random_distribution.json', text, console.log);
